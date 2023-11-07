@@ -39,6 +39,31 @@ function Bio() {
     });
   };
 
+  const [selectedImage, setSelectedImage] = useState(profileIcon);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectedImage(event.target.result);
+        // Save the image in local storage (or any other client-side storage method you prefer)
+        localStorage.setItem("profileImage", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Retrieve the profile photo from local storage
+  const profileImage = localStorage.getItem("profileImage");
+
+  // // Display the profile photo in your React component
+  // if (profileImage) {
+  //   return <img src={profileImage} alt="User's Profile" />;
+  // } else {
+  //   return <div>No profile photo selected.</div>;
+  // }
+
   const EditForm = (
     <form className="edit-bio-form" onSubmit={(e) => setProfile(e)}>
       <input
@@ -66,9 +91,25 @@ function Bio() {
   );
   return (
     <section className="bio">
-      <div className="profile-photo" role="button" title="change profile photo">
-        <img src={profileIcon} alt="profile" />
-      </div>
+      <input
+        type="file"
+        accept="image/*"
+        id="profilePhotoInput"
+        onChange={handleImageChange}
+      />
+      <label htmlFor="profilePhotoInput">
+        <div
+          className="profile-photo"
+          role="button"
+          title="change profile photo"
+        >
+          {profileImage ? (
+            <img src={profileImage} alt="profile" />
+          ) : (
+            <img src={selectedImage} alt="profile" />
+          )}
+        </div>
+      </label>
       <div className="profile-info">
         <p className="name">{person.name}</p>
         <p className="about">{person.about}</p>
