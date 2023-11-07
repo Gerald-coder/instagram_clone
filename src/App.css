@@ -159,7 +159,7 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   row-gap: 1.7em;
-  column-gap: 1em;
+  column-gap: 1.5em;
 }
 
 .item {
@@ -176,7 +176,7 @@ nav {
 }
 
 .item:hover .item-image {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .delete-button {
