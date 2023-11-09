@@ -4,7 +4,8 @@ import gerry from "./assets/gerry.jpg";
 import pexels2 from "./assets/pexels2.jpeg";
 import pexels3 from "./assets/pexels3.jpeg";
 import pexels4 from "./assets/pexels4.jpeg";
-import tochi from "./assets/tochi.jpg";
+import { db } from "./dexieDb";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const photos = [
   { url: gerry, id: 1 },
@@ -14,15 +15,18 @@ const photos = [
 ];
 
 function Gallary() {
-  const [userImages, setUsersImages] = useState(photos);
+  const userImages = useLiveQuery(() => db.gallary.toArray(), []);
 
   const handleImageUpload = async () => {
-    const newImage = {
-      id: new Date(),
+    db.gallary.add({
       url: await getphotoUrl("#addPhotoInput"),
-    };
-    setUsersImages([...userImages, newImage]);
+    });
   };
+
+  useEffect(() => {
+    [...photos, userImages];
+  }, []);
+
   return (
     <>
       <input type="file" name="photo" id="addPhotoInput" />
@@ -33,7 +37,7 @@ function Gallary() {
         />
       </label>
       <section className="gallery">
-        {userImages.map((photo) => {
+        {userImages?.map((photo) => {
           return (
             <div className="item" key={photo.id}>
               <img src={photo.url} alt="mine" className="item-image" />

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import gerry from "./assets/gerry.jpg";
 import profileIcon from "./assets/profileIcon.svg";
+import { db } from "./dexieDb";
 
 function Bio() {
   const [form, setForm] = useState(false);
@@ -12,6 +13,14 @@ function Bio() {
     name: "Gerald",
     about: "software Engineer @Google",
   });
+
+  useEffect(() => {
+    const setDataFromDb = async () => {
+      const userDetailsFromDb = await db.bio.get("info");
+      userDetailsFromDb && setPerson(userDetailsFromDb);
+    };
+    setDataFromDb();
+  }, [person]);
 
   const setProfileForm = (e) => {
     e.preventDefault();
@@ -33,13 +42,15 @@ function Bio() {
   // };
 
   //WITHOUT USING THE VALUE PROPERTY
-  const setProfile = (e) => {
+  const setProfile = async (e) => {
+    const objectData = {
+      name: e.target.userName.value,
+      about: e.target.aboutUser.value,
+    };
     e.preventDefault();
     if (e.target.userName.value || e.target.aboutUser.value) {
-      setPerson({
-        name: e.target.userName.value,
-        about: e.target.aboutUser.value,
-      });
+      setPerson(objectData);
+      await db.bio.put(objectData, "info");
     }
     setForm(false);
   };
@@ -69,6 +80,7 @@ function Bio() {
         id=""
         placeholder="name"
         name="userName"
+        defaultValue={person.name}
         // value={name}
         // onChange={(e) => setName(e.target.value)}
       />
@@ -77,6 +89,8 @@ function Bio() {
         id=""
         placeholder="about you"
         name="aboutUser"
+        defaultValue={person.about}
+
         // value={about}
         // onChange={(e) => setAbout(e.target.value)}
       />{" "}
