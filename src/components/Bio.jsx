@@ -4,6 +4,8 @@ import profileIcon from "./assets/profileIcon.svg";
 
 function Bio() {
   const [form, setForm] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(profileIcon);
+
   // const [name, setName] = useState("");
   // const [about, setAbout] = useState("");
   const [person, setPerson] = useState({
@@ -33,16 +35,19 @@ function Bio() {
   //WITHOUT USING THE VALUE PROPERTY
   const setProfile = (e) => {
     e.preventDefault();
-    setPerson({
-      name: e.target.userName.value,
-      about: e.target.aboutUser.value,
-    });
+    if (e.target.userName.value || e.target.aboutUser.value) {
+      setPerson({
+        name: e.target.userName.value,
+        about: e.target.aboutUser.value,
+      });
+    }
+    setForm(false);
   };
-
-  const [selectedImage, setSelectedImage] = useState(profileIcon);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
+    console.log(e.target.files);
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -56,13 +61,6 @@ function Bio() {
 
   // Retrieve the profile photo from local storage
   const profileImage = localStorage.getItem("profileImage");
-
-  // // Display the profile photo in your React component
-  // if (profileImage) {
-  //   return <img src={profileImage} alt="User's Profile" />;
-  // } else {
-  //   return <div>No profile photo selected.</div>;
-  // }
 
   const EditForm = (
     <form className="edit-bio-form" onSubmit={(e) => setProfile(e)}>
