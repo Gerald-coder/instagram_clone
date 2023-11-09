@@ -23,9 +23,9 @@ function Gallary() {
     });
   };
 
-  useEffect(() => {
-    [...photos, userImages];
-  }, []);
+  const removeImg = (id) => {
+    db.gallary.delete(id);
+  };
 
   return (
     <>
@@ -43,7 +43,7 @@ function Gallary() {
               <img src={photo.url} alt="mine" className="item-image" />
               <button
                 className="delete-button"
-                // onClick={(ind) => handleDeletPhoto(ind)}
+                onClick={() => removeImg(photo.id)}
               >
                 delete
               </button>
