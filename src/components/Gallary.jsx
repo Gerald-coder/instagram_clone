@@ -37,6 +37,7 @@ function Gallary() {
         />
       </label>
       <section className="gallery">
+        {!userImages && <p>Loading man...........😥😥❤✈✈❤</p>}
         {userImages?.map((photo) => {
           return (
             <div className="item" key={photo.id}>

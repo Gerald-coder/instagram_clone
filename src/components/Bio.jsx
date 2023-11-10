@@ -98,7 +98,7 @@ function Bio() {
       <button className="cancel-button" onClick={setCloseForm}>
         cancel
       </button>
-      <button type="submit">Save</button>
+      <button type="submit">Save ✔🛹</button>
     </form>
   );
   return (
